@@ -3,6 +3,7 @@ package com.example.demo;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,7 +24,9 @@ public class TimeServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		response.setContentType("text/html");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E dd-MM-yyyy HH:mm:ss");
+		
 		PrintWriter out = response.getWriter();
-		out.print(LocalDateTime.now().toLocalTime());
+		out.print(formatter.format(LocalDateTime.now()));
 		}
 }
