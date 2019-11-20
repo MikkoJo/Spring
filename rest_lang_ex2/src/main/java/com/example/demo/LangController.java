@@ -37,7 +37,6 @@ public class LangController {
 	
 	@RequestMapping(value="/langs", method= RequestMethod.POST)
 	public ResponseEntity<String> addLang(@RequestBody Lang lang) {
-		System.out.println(lang);
 		if(langService.addLang(lang)) {
 			return new ResponseEntity<String>(HttpStatus.CREATED);
 		}
