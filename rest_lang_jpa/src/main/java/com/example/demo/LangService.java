@@ -1,58 +1,42 @@
 package com.example.demo;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.example.demo.repository.LangRepository;
 
 @Component
 public class LangService {
 
-	List<Lang> langs = new ArrayList<>(Arrays.asList(
-			new Lang("Suomi", "fi"), 
-			new Lang("Ruotsi", "se"), 
-			new Lang("Norja", "no"),
-			new Lang("Islanti", "is"), 
-			new Lang("Tanska", "de")
-			));
-	
+
+	@Autowired
+	private LangRepository repo;
 	public List<Lang> getLangs() {
-		return langs;
+		return (List<Lang>) repo.findAll();
 	}
 
 	public Lang getLang(String code) {
-		for(Lang lang: langs) {
-			if(lang.getCode().equals(code)) {
-				return lang;
-			}
+		Optional<Lang> lang = repo.findById(code);
+		if(lang.isPresent()) {
+			return lang.get();
 		}
 		return null;
 	}
 	
-	public Boolean addLang(Lang lang) {
-		return langs.add(lang);
+	public void addLang(Lang lang) {
+		repo.save(lang);
 	}
 	
-	public boolean updateLang(String code, Lang lang) {
-		for(int i = 0; i < langs.size(); i++) {
-			if(langs.get(i).getCode().equals(code)) {
-				langs.set(i, lang);
-				return true;
-			}
-		}
-		return false;
+	public void updateLang(String code, Lang lang) {
+		repo.save(lang);
 		
 	}
 
-	public boolean removeLang(String code) {
-		for(int i = 0; i < langs.size(); i++) {
-			if(langs.get(i).getCode().equals(code)) {
-				langs.remove(i);
-				return true;
-			}
-		}
-		return false;
+	public void removeLang(String code) {
+		repo.deleteById(code);
 	}
 
 

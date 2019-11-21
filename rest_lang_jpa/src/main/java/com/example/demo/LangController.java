@@ -20,16 +20,14 @@ public class LangController {
 	
 
 	@RequestMapping(value="/langs", method = RequestMethod.GET, produces = 
-		{MediaType.APPLICATION_JSON_VALUE,
-			MediaType.APPLICATION_XML_VALUE
+		{MediaType.APPLICATION_JSON_VALUE
 	})
 	public List<Lang> getLangs() {
 		return langService.getLangs();
 	}
 	
 	@RequestMapping(value="langs/{code}", method = RequestMethod.GET
-			, produces = {MediaType.APPLICATION_JSON_VALUE,
-					MediaType.APPLICATION_XML_VALUE
+			, produces = {MediaType.APPLICATION_JSON_VALUE
 			})
 	public Lang getLang(@PathVariable String code) {
 		return langService.getLang(code);
@@ -37,10 +35,9 @@ public class LangController {
 	
 	@RequestMapping(value="/langs", method= RequestMethod.POST)
 	public ResponseEntity<String> addLang(@RequestBody Lang lang) {
-		if(langService.addLang(lang)) {
-			return new ResponseEntity<String>(HttpStatus.CREATED);
-		}
-		return new ResponseEntity<String>(HttpStatus.UNPROCESSABLE_ENTITY); 
+		langService.addLang(lang);
+		return new ResponseEntity<String>(HttpStatus.CREATED);
+		
 	}
 
 	@RequestMapping(
@@ -48,11 +45,12 @@ public class LangController {
 			value = "/langs/{code}"
 	)
 	public ResponseEntity<String> updateLang(@PathVariable String code, @RequestBody Lang lang) {
-		if(langService.updateLang(code, lang)) {
-			return new ResponseEntity<String>(HttpStatus.OK);
-			
+		if(!lang.getCode().equals(code)) {
+			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<String>(HttpStatus.UNPROCESSABLE_ENTITY);
+		langService.updateLang(code, lang);
+		return new ResponseEntity<String>(HttpStatus.OK);
+			
 	}
 
 	@RequestMapping(
@@ -60,11 +58,9 @@ public class LangController {
 			value = "/langs/{code}"
 	)
 	public ResponseEntity<String> removeLang(@PathVariable String code) {
-		if(langService.removeLang(code)) {
-			return new ResponseEntity<String>(HttpStatus.OK);
+		langService.removeLang(code);
+		return new ResponseEntity<String>(HttpStatus.OK);
 			
-		}
-		return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 		
 	}
     	 

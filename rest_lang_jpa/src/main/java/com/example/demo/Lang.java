@@ -1,8 +1,17 @@
 package com.example.demo;
 
-public class Lang {
+import java.io.Serializable;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
+public class Lang implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	private String name;
+	@Id
 	private String code;
 	
 	public Lang() {
